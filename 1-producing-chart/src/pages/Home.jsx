@@ -4,8 +4,11 @@ import { useState } from 'react';
 import Spacing from '../components/Spacing';
 import Text from '../components/Text';
 import { scoreRegex } from '../utils/regex';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const [scoreData, setScoreData] = useState({
     Alex: '',
     Tom: '',
@@ -13,6 +16,20 @@ const Home = () => {
     Don: '',
     Emma: '',
   });
+
+  const handleSubmitScore = (event) => {
+    event.preventDefault();
+
+    const isScoreMissing = Object.values(scoreData).some(
+      (score) => score === ''
+    );
+    if (isScoreMissing) {
+      alert('You must fill all the score!');
+      return;
+    }
+
+    navigate('/chart');
+  };
 
   const handleChangeScoreInput = (studentName) => (event) => {
     const isValid = scoreRegex.test(event.target.value);
@@ -70,6 +87,13 @@ const Home = () => {
       </ScoreBox>
 
       <BottomBtnBox>
+        <Button
+          text="Make Chart"
+          fontSize={25}
+          width={170}
+          height={60}
+          type="submit"
+        />
         <Button
           text="Reset Data"
           fontSize={25}
