@@ -3,25 +3,43 @@ import Button from '../components/Button';
 import { useState } from 'react';
 import Spacing from '../components/Spacing';
 import Text from '../components/Text';
+import { scoreRegex } from '../utils/regex';
 
 const Home = () => {
   const [scoreData, setScoreData] = useState({
-    Alex: undefined,
-    Tom: undefined,
-    Ryan: undefined,
-    Don: undefined,
-    Emma: undefined,
+    Alex: '',
+    Tom: '',
+    Ryan: '',
+    Don: '',
+    Emma: '',
   });
 
-  const studentCol = Object.keys(scoreData).map((studentName, idx) => (
-    <ColumnValueBox key={idx}>
+  const handleChangeScoreInput = (studentName) => (event) => {
+    const isValid = scoreRegex.test(event.target.value);
+
+    if (isValid) {
+      setScoreData((prevData) => ({
+        ...prevData,
+        [studentName]: event.target.value,
+      }));
+    } else {
+      alert('Not a valid input!');
+    }
+  };
+
+  const studentCol = Object.keys(scoreData).map((studentName) => (
+    <ColumnValueBox key={studentName}>
       <Text fontSize="30">{studentName}</Text>
     </ColumnValueBox>
   ));
 
-  const scoreCol = Object.values(scoreData).map((studentScore, idx) => (
-    <ColumnValueBox key={idx}>
-      <ScoreInput value={studentScore} placeholder="fill in the score" />
+  const scoreCol = Object.keys(scoreData).map((studentName) => (
+    <ColumnValueBox key={studentName}>
+      <ScoreInput
+        value={scoreData[studentName]}
+        placeholder="fill in the score"
+        onChange={handleChangeScoreInput(studentName)}
+      />
     </ColumnValueBox>
   ));
 
