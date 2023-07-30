@@ -27,6 +27,16 @@ const Home = () => {
     }
   };
 
+  const handleResetBtnClick = () => {
+    setScoreData((prevData) => {
+      const newData = {};
+      Object.keys(prevData).forEach((studentName) => {
+        newData[studentName] = '';
+      });
+      return newData;
+    });
+  };
+
   const studentCol = Object.keys(scoreData).map((studentName) => (
     <ColumnValueBox key={studentName}>
       <Text fontSize="30">{studentName}</Text>
@@ -44,7 +54,7 @@ const Home = () => {
   ));
 
   return (
-    <HomeBox>
+    <ScoreForm onSubmit={handleSubmitScore}>
       <ScoreBox>
         <ColumnBox width="160">
           <Text fontSize="30">Student</Text>
@@ -60,26 +70,18 @@ const Home = () => {
       </ScoreBox>
 
       <BottomBtnBox>
-        <Button text="Make Chart" fontSize={25} width={170} height={60} />
-        <Button text="Reset Data" fontSize={25} width={170} height={60} />
+        <Button
+          text="Reset Data"
+          fontSize={25}
+          width={170}
+          height={60}
+          type="button"
+          onClick={handleResetBtnClick}
+        />
       </BottomBtnBox>
-    </HomeBox>
+    </ScoreForm>
   );
 };
-
-const HomeBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-  height: 700px;
-  padding: 40px;
-  font-size: 60px;
-  border: 1px solid black;
-  border-radius: 20px;
-`;
 
 const ScoreBox = styled.div`
   display: flex;
@@ -108,6 +110,20 @@ const ScoreInput = styled.input`
   &::placeholder {
     color: lightgray;
   }
+`;
+
+const ScoreForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  height: 700px;
+  padding: 40px;
+  font-size: 60px;
+  border: 1px solid black;
+  border-radius: 20px;
 `;
 
 const BottomBtnBox = styled.div`
