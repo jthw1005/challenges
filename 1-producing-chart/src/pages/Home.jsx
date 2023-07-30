@@ -1,21 +1,16 @@
 import styled from 'styled-components';
 import Button from '../components/Button';
-import { useState } from 'react';
 import Spacing from '../components/Spacing';
 import Text from '../components/Text';
 import { scoreRegex } from '../utils/regex';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { ScoreData } from '../recoil/scoreData';
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const [scoreData, setScoreData] = useState({
-    Alex: '',
-    Tom: '',
-    Ryan: '',
-    Don: '',
-    Emma: '',
-  });
+  const [scoreData, setScoreData] = useRecoilState(ScoreData);
 
   const handleSubmitScore = (event) => {
     event.preventDefault();
