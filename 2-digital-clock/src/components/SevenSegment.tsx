@@ -47,8 +47,9 @@ const SevenSegment = ({ number }: ISevenSegmentProps) => {
     },
   ];
 
-  const hexagons = data.map(({ top, left, isOn, rotate }) => (
+  const hexagons = data.map(({ top, left, isOn, rotate }, idx) => (
     <Hexagon
+      key={idx}
       width={80}
       height={17}
       top={top}
