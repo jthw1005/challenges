@@ -58,9 +58,9 @@ const Chart = () => {
         />
       </BtnBox>
 
-      <Spacing height="30" />
+      <Spacing height="10" />
 
-      <canvas ref={canvasRef} width={500} height={500}></canvas>
+      <canvas ref={canvasRef} width={500} height={450}></canvas>
     </ChartBox>
   );
 };
