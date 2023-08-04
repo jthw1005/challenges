@@ -1,11 +1,10 @@
 import { styled } from 'styled-components';
 
-interface IAMPMIndicator {
-  hour: string;
-}
+const AMPMIndicator = () => {
+  const now = new Date();
+  const hour = now.getHours();
 
-const AMPMIndicator = ({ hour }: IAMPMIndicator) => {
-  const currIndicator = +hour >= 12 ? 'PM' : 'AM';
+  const currIndicator = hour >= 12 ? 'PM' : 'AM';
 
   return <AMPMIndicatorBox>{currIndicator}</AMPMIndicatorBox>;
 };

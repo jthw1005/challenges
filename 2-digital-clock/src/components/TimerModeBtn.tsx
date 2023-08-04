@@ -1,11 +1,64 @@
 import { styled } from 'styled-components';
+import { Hour, Minute, Second } from '../recoil/time';
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useEffect, useRef } from 'react';
+import { clear } from 'console';
 
 const TimerModeBtn = () => {
-  const handleStartBtnClick = () => {};
+  const setHour = useSetRecoilState<string>(Hour);
+  const [minute, setMinute] = useRecoilState<string>(Minute);
+  const setSecond = useSetRecoilState<number>(Second);
+  const resetHour = useResetRecoilState(Hour);
+  const resetMinute = useResetRecoilState(Minute);
+  const resetSecond = useResetRecoilState(Second);
 
-  const handlePauseBtnClick = () => {};
+  const timerRef = useRef<number | null>(null);
+  const secondTimerRef = useRef<number | null>(null);
 
-  const handleResetBtnClick = () => {};
+  const resetTimer = () => {
+    if (timerRef.current && secondTimerRef.current) {
+      clearTimeout(timerRef.current);
+      clearTimeout(secondTimerRef.current);
+    }
+    timerRef.current = null;
+    secondTimerRef.current = null;
+  };
+
+  const handleStartBtnClick = () => {
+    if (timerRef.current) {
+      return;
+    }
+    timerRef.current = window.setInterval(() => {
+      setMinute((prev) => String(+prev + 1).padStart(2, '0'));
+    }, 1000);
+
+    secondTimerRef.current = window.setInterval(() => {
+      setSecond((prev) => prev + 1);
+    }, 500);
+  };
+
+  const handlePauseBtnClick = () => {
+    resetTimer();
+  };
+
+  const handleResetBtnClick = () => {
+    resetHour();
+    resetMinute();
+  };
+
+  useEffect(() => {
+    if (+minute === 60) {
+      resetMinute();
+      setHour((prev) => String(+prev + 1).padStart(2, '0'));
+    }
+  }, [minute]);
+
+  useEffect(() => {
+    return () => {
+      resetTimer();
+      resetSecond();
+    };
+  }, []);
 
   return (
     <TimerModeBtnBox>

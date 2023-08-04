@@ -1,9 +1,11 @@
 import { styled } from 'styled-components';
-import { HourSystem, THourSystem, TMode } from './Clock';
+import { HourSystem, Mode, THourSystem, TMode } from './Clock';
 import AMPMIndicator from './AMPMIndicator';
 import SevenSegment from './SevenSegment';
 import Dot from './Dot';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import { Hour, Minute, Second } from '../recoil/time';
 
 interface IDisplayProps {
   mode: TMode;
@@ -11,25 +13,60 @@ interface IDisplayProps {
 }
 
 const Display = ({ mode, hourSystem }: IDisplayProps) => {
-  const [hour, setHour] = useState<string>('');
-  const [minute, setMinute] = useState<string>('');
-  const [second, setSecond] = useState<number>(0);
+  const [hour, setHour] = useRecoilState<string>(Hour);
+  const [minute, setMinute] = useRecoilState<string>(Minute);
+  const [second, setSecond] = useRecoilState<number>(Second);
+  const resetHour = useResetRecoilState(Hour);
+  const resetMinute = useResetRecoilState(Minute);
+
+  const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    timerRef.current = window.setInterval(() => {
       setSecond((prev) => prev + 1);
     }, 500);
 
     return () => {
-      clearInterval(timer);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
     };
   }, []);
 
   useEffect(() => {
+    if (mode === Mode.timer) {
+      return;
+    }
+
     const now = new Date();
-    setHour(String(now.getHours()).padStart(2, '0'));
+    setHour(
+      String(
+        hourSystem === HourSystem.twentyFour
+          ? now.getHours()
+          : now.getHours() % 12
+      ).padStart(2, '0')
+    );
     setMinute(String(now.getMinutes()).padStart(2, '0'));
-  }, [second]);
+  }, [second, mode]);
+
+  useEffect(() => {
+    if (mode === Mode.clock) {
+      if (!timerRef.current) {
+        timerRef.current = window.setInterval(() => {
+          setSecond((prev) => prev + 1);
+        }, 500);
+      }
+      return;
+    }
+
+    resetHour();
+    resetMinute();
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }, [mode]);
 
   return (
     <DisplayBox>
@@ -43,7 +80,9 @@ const Display = ({ mode, hourSystem }: IDisplayProps) => {
         <SevenSegment number={+minute[0]} />
         <SevenSegment number={+minute[1]} />
       </SevenSegmentBox>
-      {hourSystem === HourSystem.twelve && <AMPMIndicator hour={hour} />}
+      {mode === Mode.clock && hourSystem === HourSystem.twelve && (
+        <AMPMIndicator />
+      )}
     </DisplayBox>
   );
 };
