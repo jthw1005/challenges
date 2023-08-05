@@ -1,7 +1,20 @@
+@import url('./reset.css');
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-/* write your CSS here */
+body {
+  background-color: #d8ecfd;
+}
+
+#main {
+  background-color: #fff;
+  width: 800px;
+  height: 400px;
+  margin: 200px auto;
+  border-radius: 20px;
+  padding: 50px;
+}
