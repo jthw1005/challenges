@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 const AMPMIndicator = () => {
   const now = new Date();
   const hour = now.getHours();
-
   const currIndicator = hour >= 12 ? 'PM' : 'AM';
 
   return <AMPMIndicatorBox>{currIndicator}</AMPMIndicatorBox>;

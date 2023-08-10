@@ -5,56 +5,25 @@ interface ISevenSegmentProps {
   number: number;
 }
 
-const SevenSegment = ({ number }: ISevenSegmentProps) => {
-  const data = [
-    { top: 0, left: 10, isOn: number !== 1 && number !== 4, rotate: false },
-    {
-      top: 50,
-      left: -22,
-      isOn: number !== 1 && number !== 2 && number !== 3,
-      rotate: true,
-    },
-    { top: 50, left: 59, isOn: number !== 5 && number !== 6, rotate: true },
-    {
-      top: 83,
-      left: 10,
-      isOn: number !== 0 && number !== 1 && number !== 7,
-      rotate: false,
-    },
-    {
-      top: 133,
-      left: -22,
-      isOn:
-        number !== 1 &&
-        number !== 3 &&
-        number !== 4 &&
-        number !== 5 &&
-        number !== 7 &&
-        number !== 9,
-      rotate: true,
-    },
-    {
-      top: 133,
-      left: 59,
-      isOn: number !== 2,
-      rotate: true,
-    },
-    {
-      top: 166,
-      left: 10,
-      isOn: number !== 1 && number !== 4 && number !== 7,
-      rotate: false,
-    },
-  ];
+const segmentData = [
+  { top: 0, left: 10, offArr: [1, 4], rotate: false },
+  { top: 50, left: -22, offArr: [1, 2, 3], rotate: true },
+  { top: 50, left: 59, offArr: [5, 6], rotate: true },
+  { top: 83, left: 10, offArr: [0, 1, 7], rotate: false },
+  { top: 133, left: -22, offArr: [1, 3, 4, 5, 7, 9], rotate: true },
+  { top: 133, left: 59, offArr: [2], rotate: true },
+  { top: 166, left: 10, offArr: [1, 4, 7], rotate: false },
+];
 
-  const hexagons = data.map(({ top, left, isOn, rotate }, idx) => (
+const SevenSegment = ({ number }: ISevenSegmentProps) => {
+  const hexagons = segmentData.map(({ top, left, offArr, rotate }, idx) => (
     <Hexagon
       key={idx}
       width={80}
       height={17}
       top={top}
       left={left}
-      isOn={isOn}
+      ison={!offArr.includes(number)}
       rotate={rotate}
     />
   ));

@@ -1,18 +1,26 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
+import { Mode, TMode } from './Clock';
 
 interface IModeSwitchProps {
-  onToggle: (value: boolean) => void;
-  defaultChecked: boolean;
+  setMode: React.Dispatch<React.SetStateAction<TMode>>;
+  defaultCheckState: boolean;
 }
 
-const ModeSwitch = ({ onToggle, defaultChecked = false }: IModeSwitchProps) => {
-  const [isChecked, setIsChecked] = useState(defaultChecked);
+const ModeSwitch = ({
+  setMode,
+  defaultCheckState = false,
+}: IModeSwitchProps) => {
+  const [isChecked, setIsChecked] = useState(defaultCheckState);
 
   const handleToggle = () => {
-    const newChecked = !isChecked;
-    setIsChecked(newChecked);
-    onToggle(newChecked);
+    setIsChecked((prev) => !prev);
+
+    if (isChecked) {
+      setMode(Mode.clock);
+    } else {
+      setMode(Mode.timer);
+    }
   };
 
   return (

@@ -10,7 +10,7 @@ const Layout = ({ children }: ILayoutProps) => {
 };
 
 const LayoutBox = styled.div`
-  width: 700px;
+  width: 800px;
   margin: 150px auto;
 `;
 

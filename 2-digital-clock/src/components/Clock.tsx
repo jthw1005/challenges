@@ -1,13 +1,13 @@
 import { styled } from 'styled-components';
 import Display from './Display';
 import { useState } from 'react';
-import HourSystemBtn from './HourSystemBtn';
+import ClockControlBtn from './ClockControlBtn';
 import ModeSwitch from './ModeSwitch';
 import Spacing from './Spacing';
-import TimerModeBtn from './TimerModeBtn';
+import TimerControlBtn from './TimerControlBtn';
 
-export type TMode = 'clock' | 'timer';
-export type THourSystem = 12 | 24;
+export type TMode = keyof typeof Mode;
+export type THourSystem = (typeof HourSystem)[keyof typeof HourSystem];
 
 export enum Mode {
   clock = 'clock',
@@ -19,57 +19,67 @@ export enum HourSystem {
   twentyFour = 24,
 }
 
+export const DEFAULT_NUMBER = '0000';
+
 const Clock = () => {
+  const [number, setNumber] = useState<string>(DEFAULT_NUMBER);
   const [mode, setMode] = useState<TMode>(Mode.clock);
   const [hourSystem, setHourSystem] = useState<THourSystem>(HourSystem.twelve);
+  const [isRunning, setIsRunning] = useState<boolean>(true);
 
-  const handleToggle = (checked: boolean) => {
-    if (checked) {
-      setMode(Mode.timer);
-    } else {
-      setMode(Mode.clock);
-    }
-  };
+  const controlBtn =
+    mode === Mode.clock ? (
+      <ClockControlBtn
+        hourSystem={hourSystem}
+        setHourSystem={setHourSystem}
+        setNumber={setNumber}
+        setIsRunning={setIsRunning}
+      />
+    ) : (
+      <TimerControlBtn
+        number={number}
+        setNumber={setNumber}
+        setIsRunning={setIsRunning}
+        isRunning={isRunning}
+      />
+    );
+
+  const padedNumber = number.padStart(4, '0');
 
   return (
     <ClockBox>
-      <DisplayBox>
-        <Display mode={mode} hourSystem={hourSystem} />
-      </DisplayBox>
+      <Display
+        mode={mode}
+        hourSystem={hourSystem}
+        number={padedNumber}
+        isRunning={isRunning}
+      />
       <Spacing width={0} height={40} />
-      <ControlBox>
-        <ModeSwitch onToggle={handleToggle} defaultChecked={false} />
-        {mode === Mode.clock ? (
-          <HourSystemBtn
-            hourSystem={hourSystem}
-            setHourSystem={setHourSystem}
-          />
-        ) : (
-          <TimerModeBtn />
-        )}
-      </ControlBox>
+      <ControlBtnBox>
+        <ModeSwitch setMode={setMode} defaultCheckState={false} />
+        {controlBtn}
+      </ControlBtnBox>
     </ClockBox>
   );
 };
 
 const ClockBox = styled.div`
-  border: 1px solid black;
-  width: 100%;
-  height: 500px;
-  border-radius: 30px;
-  padding: 50px 25px;
-`;
-
-const DisplayBox = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 50px 25px;
+  border: 1px solid black;
+  border-radius: 30px;
 `;
 
-const ControlBox = styled.div`
+const ControlBtnBox = styled.div`
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 50px;
+  width: 100%;
+  padding: 0 50px;
 `;
 
 export default Clock;
