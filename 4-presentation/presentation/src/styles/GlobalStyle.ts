@@ -10,6 +10,9 @@ const GlobalStyle = createGlobalStyle`
 
   button {
     background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
   }
 `;
 

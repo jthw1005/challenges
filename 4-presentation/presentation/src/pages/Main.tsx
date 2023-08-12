@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
 interface IMainProps {
   images: string[];
@@ -25,20 +25,41 @@ const Main = ({
   setEndIdx,
 }: IMainProps) => {
   const handlePrevBtnClick = () => {
-    if (currIdx > 0) {
-      setCurrIdx(currIdx - 1);
+    if (currIdx <= 0) {
+      return;
+    }
+    setCurrIdx(currIdx - 1);
+    if (currIdx === startIdx) {
+      setStartIdx((prev) => prev - 1);
+      setEndIdx((prev) => prev - 1);
     }
   };
 
   const handleNextBtnClick = () => {
-    if (currIdx < images.length - 1) {
-      setCurrIdx(currIdx + 1);
+    if (currIdx >= images.length - 1) {
+      return;
+    }
+    setCurrIdx(currIdx + 1);
+    if (currIdx === endIdx) {
+      setStartIdx((prev) => prev + 1);
+      setEndIdx((prev) => prev + 1);
     }
   };
 
-  const mainList = images
-    .slice(startIdx, endIdx + 1)
-    .map((image, index) => <SubCarouselImage key={index} src={image} />);
+  const handleSubImageClick = (index: number) => () => {
+    setCurrIdx(index);
+  };
+
+  const mainList = images.slice(startIdx, endIdx + 1).map((image, index) => (
+    <SubCarouselBtn>
+      <SubCarouselImage
+        key={index}
+        src={image}
+        onClick={handleSubImageClick(startIdx + index)}
+        isSelected={index + startIdx === currIdx}
+      />
+    </SubCarouselBtn>
+  ));
 
   return (
     <MainPageLayout>
@@ -79,8 +100,8 @@ const MainCarouselBox = styled.div`
 `;
 
 const MainCarouselFrame = styled.div`
-  width: ${MAIN_IMAGE_WIDTH};
-  height: ${MAIN_IMAGE_HEIGHT};
+  width: ${MAIN_IMAGE_WIDTH}px;
+  height: ${MAIN_IMAGE_HEIGHT}px;
   overflow: hidden;
 `;
 
@@ -88,12 +109,11 @@ const MainCarouselImageWrapper = styled.div<{ translateX: number }>`
   display: flex;
   transition: transform 0.4s ease;
   transform: translateX(${(props) => props.translateX}px);
-  width: ${MAIN_IMAGE_WIDTH};
+  width: ${MAIN_IMAGE_WIDTH}px;
 `;
 
 const MainCarouselImage = styled.img`
   width: ${MAIN_IMAGE_WIDTH}px;
-  height: ${MAIN_IMAGE_HEIGHT}px;
   object-fit: cover;
 `;
 
@@ -103,6 +123,8 @@ const MainCarouselBtn = styled.button`
   transform: translateY(-50%);
   width: 30px;
   height: 30px;
+  border: 1px solid black;
+  background-color: lightgray;
 `;
 
 const PrevButton = styled(MainCarouselBtn)`
@@ -115,11 +137,21 @@ const NextButton = styled(MainCarouselBtn)`
 
 const SubCarouselBox = styled.ul``;
 
-const SubCarouselImage = styled.img`
+const SubCarouselBtn = styled.button`
+  margin: 0 10px;
+`;
+
+const SubCarouselImage = styled.img<{ isSelected: boolean }>`
   width: 100px;
   height: 100px;
   object-fit: cover;
-  margin: 0 10px;
+  ${({ isSelected }) => {
+    if (isSelected) {
+      return css`
+        box-shadow: 0px 0px 10px blue;
+      `;
+    }
+  }}
 `;
 
 export default Main;
