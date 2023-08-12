@@ -12,14 +12,28 @@ const App = () => {
   const [images, setImages] = useState<string[]>([]);
   const [currIdx, setCurrIdx] = useState<number>(INIT_VALUE);
   const [startIdx, setStartIdx] = useState<number>(INIT_VALUE);
-  const [endIdx, setEndIdx] = useState<number>(INIT_VALUE + LIST_SIZE);
+  const [endIdx, setEndIdx] = useState<number>(INIT_VALUE + LIST_SIZE - 1);
 
   return (
     <Layout>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home setImages={setImages} />} />
-          <Route path="main" element={<Main />} />
+          <Route
+            path="main"
+            element={
+              <Main
+                images={images}
+                setImages={setImages}
+                currIdx={currIdx}
+                setCurrIdx={setCurrIdx}
+                startIdx={startIdx}
+                setStartIdx={setStartIdx}
+                endIdx={endIdx}
+                setEndIdx={setEndIdx}
+              />
+            }
+          />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

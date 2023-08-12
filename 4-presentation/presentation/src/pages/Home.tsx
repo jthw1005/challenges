@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -65,7 +65,7 @@ const Button = styled.label`
   text-align: center;
   line-height: 150px;
   font-size: 20px;
-  background-color: skyblue;
+  background-color: #35a555;
   border-radius: 20px;
   border: 2px solid black;
   cursor: pointer;
