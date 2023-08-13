@@ -62,6 +62,8 @@ const Main = ({
     </SubCarouselBtn>
   ));
 
+  const imageNum = `${images.length === 0 ? 0 : currIdx + 1}/${images.length}`;
+
   return (
     <MainPageLayout>
       <MainCarouselBox>
@@ -77,7 +79,7 @@ const Main = ({
       </MainCarouselBox>
       <AddImageBtn setImages={setImages} size="small" />
       <ul>{mainList}</ul>
-      <div>1/10</div>
+      <div>{imageNum}</div>
     </MainPageLayout>
   );
 };
