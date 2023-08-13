@@ -113,12 +113,12 @@ const MainCarouselImageWrapper = styled.div<{ translateX: number }>`
   display: flex;
   transition: transform 0.4s ease;
   transform: translateX(${(props) => props.translateX}px);
-  width: ${MAIN_IMAGE_WIDTH}px;
 `;
 
 const MainCarouselImage = styled.img`
-  width: ${MAIN_IMAGE_WIDTH}px;
-  object-fit: cover;
+  min-width: ${MAIN_IMAGE_WIDTH}px;
+  max-height: ${MAIN_IMAGE_HEIGHT}px;
+  height: auto;
 `;
 
 const MainCarouselBtn = styled.button`
@@ -154,13 +154,6 @@ const SubCarouselImage = styled.img<{ isSelected: boolean }>`
       `;
     }
   }}
-`;
-
-const AddBtn = styled.button`
-  border: 1px solid black;
-  background-color: lightgray;
-  padding: 10px;
-  border-radius: 10px;
 `;
 
 export default Main;
