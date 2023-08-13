@@ -1,30 +1,32 @@
 import { css, styled } from 'styled-components';
 import AddImageBtn from '../components/AddImageBtn';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface IMainProps {
   images: string[];
   setImages: React.Dispatch<React.SetStateAction<string[]>>;
-  currIdx: number;
-  setCurrIdx: React.Dispatch<React.SetStateAction<number>>;
-  startIdx: number;
-  setStartIdx: React.Dispatch<React.SetStateAction<number>>;
-  endIdx: number;
-  setEndIdx: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const MAIN_IMAGE_WIDTH = 550;
 const MAIN_IMAGE_HEIGHT = 360;
+const INIT_VALUE = 0;
+const SUB_CAROUSEL_SIZE = 5;
 
-const Main = ({
-  images,
-  setImages,
-  currIdx,
-  setCurrIdx,
-  startIdx,
-  setStartIdx,
-  endIdx,
-  setEndIdx,
-}: IMainProps) => {
+const Main = ({ images, setImages }: IMainProps) => {
+  const navigate = useNavigate();
+
+  const [startIdx, setStartIdx] = useState<number>(INIT_VALUE);
+  const [endIdx, setEndIdx] = useState<number>(
+    INIT_VALUE + SUB_CAROUSEL_SIZE - 1
+  );
+  const [currIdx, setCurrIdx] = useState<number>(INIT_VALUE);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+
+  useEffect(() => {
+    setEndIdx(Math.min(images.length - 1, startIdx + SUB_CAROUSEL_SIZE - 1));
+  }, [images]);
+
   const handlePrevBtnClick = () => {
     if (currIdx <= 0) {
       return;
@@ -51,16 +53,58 @@ const Main = ({
     setCurrIdx(index);
   };
 
-  const mainList = images.slice(startIdx, endIdx + 1).map((image, index) => (
-    <SubCarouselBtn>
-      <SubCarouselImage
-        key={index}
-        src={image}
-        onClick={handleSubImageClick(startIdx + index)}
-        isSelected={index + startIdx === currIdx}
-      />
-    </SubCarouselBtn>
-  ));
+  const handleSubCarouselImgMouseEnter = (index: number) => () => {
+    setHoveredIdx(index);
+  };
+
+  const handleSubCarouselImgMouseLeave = () => {
+    setHoveredIdx(null);
+  };
+
+  const handleDeleteBtnClick = (index: number) => () => {
+    setImages((prevImages) => {
+      return [...prevImages].filter((_, idx) => {
+        return idx !== index;
+      });
+    });
+
+    if (images.length === 1) {
+      navigate('/');
+      return;
+    }
+
+    if (endIdx === images.length - 1 && startIdx !== 0) {
+      setStartIdx((prev) => prev - 1);
+      setEndIdx((prev) => prev - 1);
+    }
+
+    if (currIdx === images.length - 1) {
+      setCurrIdx((prev) => prev - 1);
+    }
+  };
+
+  const mainList = images.slice(startIdx, endIdx + 1).map((image, index) => {
+    const originIdx = startIdx + index;
+    return (
+      <SubCarouselBtn
+        onMouseEnter={handleSubCarouselImgMouseEnter(originIdx)}
+        onMouseLeave={handleSubCarouselImgMouseLeave}
+      >
+        <SubCarouselImage
+          key={index}
+          src={image}
+          isSelected={originIdx === currIdx}
+          onClick={handleSubImageClick(originIdx)}
+        />
+        <SubCaroueselDeleteBtn
+          isHover={originIdx === hoveredIdx}
+          onClick={handleDeleteBtnClick(originIdx)}
+        >
+          ❌
+        </SubCaroueselDeleteBtn>
+      </SubCarouselBtn>
+    );
+  });
 
   const imageNum = `${images.length === 0 ? 0 : currIdx + 1}/${images.length}`;
 
@@ -140,6 +184,7 @@ const NextButton = styled(MainCarouselBtn)`
 `;
 
 const SubCarouselBtn = styled.button`
+  position: relative;
   margin: 0 10px;
 `;
 
@@ -151,6 +196,29 @@ const SubCarouselImage = styled.img<{ isSelected: boolean }>`
     if (isSelected) {
       return css`
         box-shadow: 0px 0px 10px blue;
+      `;
+    }
+  }}
+`;
+
+const SubCaroueselDeleteBtn = styled.button<{ isHover: boolean }>`
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  background-color: lightgray;
+  border: 1px solid black;
+  border-radius: 50%;
+  ${({ isHover }) => {
+    if (isHover) {
+      return css`
+        display: block;
+      `;
+    } else {
+      return css`
+        display: none;
       `;
     }
   }}

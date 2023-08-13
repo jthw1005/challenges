@@ -28,8 +28,12 @@ const AddImageBtn = ({
           ...prevImages,
           reader.result as string,
         ]);
-        if (onSuccessCallback) {
-          onSuccessCallback();
+
+        if (i === files.length - 1) {
+          if (onSuccessCallback) {
+            console.log('cb');
+            onSuccessCallback();
+          }
         }
       };
       reader.readAsDataURL(files[i]);
