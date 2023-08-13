@@ -1,4 +1,5 @@
 import { css, styled } from 'styled-components';
+import AddImageBtn from '../components/AddImageBtn';
 
 interface IMainProps {
   images: string[];
@@ -74,8 +75,9 @@ const Main = ({
         </MainCarouselFrame>
         <NextButton onClick={handleNextBtnClick}>➡️</NextButton>
       </MainCarouselBox>
-
-      <SubCarouselBox>{mainList}</SubCarouselBox>
+      <AddImageBtn setImages={setImages} size="small" />
+      <ul>{mainList}</ul>
+      <div>1/10</div>
     </MainPageLayout>
   );
 };
@@ -86,7 +88,7 @@ const MainPageLayout = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 600px;
+  height: 650px;
   padding: 40px;
   border: 3px solid black;
   border-radius: 20px;
@@ -135,8 +137,6 @@ const NextButton = styled(MainCarouselBtn)`
   right: -40px;
 `;
 
-const SubCarouselBox = styled.ul``;
-
 const SubCarouselBtn = styled.button`
   margin: 0 10px;
 `;
@@ -152,6 +152,13 @@ const SubCarouselImage = styled.img<{ isSelected: boolean }>`
       `;
     }
   }}
+`;
+
+const AddBtn = styled.button`
+  border: 1px solid black;
+  background-color: lightgray;
+  padding: 10px;
+  border-radius: 10px;
 `;
 
 export default Main;
