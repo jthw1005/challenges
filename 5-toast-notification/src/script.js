@@ -16,7 +16,12 @@ const ICONS = {
   information: 'ℹ️',
 };
 
-const toast = ({ toastType, message, position, durationTime }) => {
+const toast = ({
+  toastType = 'success',
+  message = 'success',
+  position = 'left',
+  durationTime = 4,
+}) => {
   const $toastContainer =
     position === 'left'
       ? document.getElementById('toast-left')
