@@ -4,12 +4,82 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="./src/style.css" />
     <title>Toast Notification Component - FrontendPro Challenge</title>
   </head>
   <body>
-    <!-- Write your HTML here -->
-
-    <script src="/src/script.js"></script>
+    <div id="toast">
+      <div id="toast-left">
+        <div class="toast-box">
+          <div class="toast-content-wrapper">
+            <span class="toast-msg-icon">✅</span>
+            <span class="toast-msg-text">Success</span>
+            <button class="toast-close-btn">❌</button>
+          </div>
+          <div class="progress-bar success"></div>
+        </div>
+        <div class="toast-box">
+          <div class="toast-content-wrapper">
+            <span class="toast-msg-icon">🚨</span>
+            <span class="toast-msg-text">Error</span>
+            <button class="toast-close-btn">❌</button>
+          </div>
+          <div class="progress-bar error"></div>
+        </div>
+        <div class="toast-box">
+          <div class="toast-content-wrapper">
+            <span class="toast-msg-icon">⚠️</span>
+            <span class="toast-msg-text">Warning</span>
+            <button class="toast-close-btn">❌</button>
+          </div>
+          <div class="progress-bar warning"></div>
+        </div>
+        <div class="toast-box">
+          <div class="toast-content-wrapper">
+            <span class="toast-msg-icon">ℹ️</span>
+            <span class="toast-msg-text">Information</span>
+            <button class="toast-close-btn">❌</button>
+          </div>
+          <div class="progress-bar information"></div>
+        </div>
+      </div>
+      <div id="toast-right">
+        <div class="toast-box">
+          <div class="toast-content-wrapper">
+            <span class="toast-msg-icon">✅</span>
+            <span class="toast-msg-text">Success</span>
+            <button class="toast-close-btn">❌</button>
+          </div>
+        </div>
+        <div class="toast-box">
+          <div class="toast-content-wrapper">
+            <span class="toast-msg-icon">🚨</span>
+            <span class="toast-msg-text">Error</span>
+            <button class="toast-close-btn">❌</button>
+          </div>
+        </div>
+        <div class="toast-box">
+          <div class="toast-content-wrapper">
+            <span class="toast-msg-icon">⚠️</span>
+            <span class="toast-msg-text">Warning</span>
+            <button class="toast-close-btn">❌</button>
+          </div>
+        </div>
+        <div class="toast-box">
+          <div class="toast-content-wrapper">
+            <span class="toast-msg-icon">ℹ️</span>
+            <span class="toast-msg-text">Information</span>
+            <button class="toast-close-btn">❌</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-wrapper">
+      <button class="test-btn">success</button>
+      <button class="test-btn">error</button>
+      <button class="test-btn">warning</button>
+      <button class="test-btn">information</button>
+    </div>
+    <script src="./src/script.js"></script>
   </body>
 </html>

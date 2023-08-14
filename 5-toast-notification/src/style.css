@@ -4,4 +4,92 @@
   box-sizing: border-box;
 }
 
-/* write your CSS here */
+.btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: 400px;
+}
+
+.test-btn {
+  width: 100px;
+  padding: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#toast-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 20px;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  width: 250px;
+}
+
+#toast-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 20px;
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  width: 250px;
+}
+
+.toast-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 250px;
+  height: 60px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 3px 5px 1px rgba(0, 0, 0, 0.5);
+}
+
+.toast-content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.toast-msg-text {
+  width: 75%;
+}
+
+.toast-close-btn {
+  background-color: transparent;
+  border: none;
+}
+
+.progress-bar {
+  position: absolute;
+  bottom: 0px;
+  width: 250px;
+  height: 5px;
+}
+
+.success {
+  background-color: #1c1;
+}
+
+.error {
+  background-color: #e44;
+}
+
+.warning {
+  background-color: #ffa500;
+}
+
+.information {
+  background-color: #37c;
+}
