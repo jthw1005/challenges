@@ -45,7 +45,6 @@
 
 .toast-box {
   display: flex;
-  justify-content: center;
   align-items: center;
   position: relative;
   width: 250px;
@@ -69,11 +68,13 @@
 .toast-close-btn {
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 
 .progress-bar {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
+  left: 0;
   width: 250px;
   height: 5px;
 }
