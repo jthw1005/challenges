@@ -1,96 +1,85 @@
-export const createPiChart = (canvas, ctx, data, color) => {
+export const createPiChart = (canvas, ctx, data, colors) => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  const sum = Object.values(data).reduce((acc, cur) => acc + +cur, 0);
-
+  const values = Object.values(data);
+  const sum = values.reduce((acc, cur) => acc + +cur, 0);
   let startAngle = (3 * Math.PI) / 2;
+  let currentSegment = 0;
+  let currentAngle = 0;
 
-  const arr = Object.keys(data);
-  let idx = 0;
-  // Object.keys(data).forEach((studentName, idx) => {
-  //   const sliceAngle = (2 * Math.PI * data[studentName]) / sum;
-  //   ctx.fillStyle = color[idx];
-  //   ctx.beginPath();
-  //   ctx.moveTo(canvas.width / 2, canvas.height / 2);
-  //   ctx.arc(
-  //     canvas.width / 2,
-  //     canvas.height / 2,
-  //     Math.min(canvas.width / 2, canvas.height / 2),
-  //     startAngle,
-  //     startAngle + sliceAngle
-  //   );
-  //   ctx.closePath();
-  //   ctx.fill();
-  //   startAngle += sliceAngle;
-  // });
+  const drawSegment = () => {
+    if (currentSegment < values.length) {
+      const sliceAngle = (2 * Math.PI * values[currentSegment]) / sum;
 
-  const sliceAngle = (2 * Math.PI * data[arr[idx]]) / sum;
-
-  const renderChart = (startAngle) => {
-    ctx.beginPath();
-    ctx.moveTo(canvas.width / 2, canvas.height / 2);
-    ctx.arc(
-      canvas.width / 2,
-      canvas.height / 2,
-      Math.min(canvas.width / 2, canvas.height / 2),
-      startAngle,
-      startAngle + Math.PI / 36
-    );
-    ctx.closePath();
-    ctx.fillStyle = color[idx];
-    ctx.fill();
+      if (currentAngle < sliceAngle) {
+        ctx.fillStyle = colors[currentSegment];
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, canvas.height / 2);
+        ctx.arc(
+          canvas.width / 2,
+          canvas.height / 2,
+          Math.min(canvas.width / 2, canvas.height / 2),
+          startAngle,
+          startAngle + currentAngle
+        );
+        ctx.closePath();
+        ctx.fill();
+        currentAngle += (2 * Math.PI) / 90;
+        requestAnimationFrame(drawSegment);
+      } else {
+        ctx.fillStyle = colors[currentSegment];
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, canvas.height / 2);
+        ctx.arc(
+          canvas.width / 2,
+          canvas.height / 2,
+          Math.min(canvas.width / 2, canvas.height / 2),
+          startAngle,
+          startAngle + sliceAngle
+        );
+        ctx.closePath();
+        ctx.fill();
+        startAngle += sliceAngle;
+        currentSegment++;
+        currentAngle = 0;
+        drawSegment();
+      }
+    }
   };
 
-  animatePiChart(5, startAngle, startAngle + sliceAngle, renderChart);
+  drawSegment();
 };
 
-const animatePiChart = (animationFrame, startAngle, endAngle, renderFn) => {
-  if (startAngle > endAngle) {
-    return;
-  }
-
-  setTimeout(() => {
-    renderFn(startAngle);
-    animatePiChart(
-      animationFrame,
-      startAngle + Math.PI / 36,
-      endAngle,
-      renderFn
-    );
-  }, animationFrame);
-
-  return;
-};
-
-export const createBarChart = (canvas, ctx, data, color) => {
+export const createBarChart = (canvas, ctx, data, colors) => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   const maxValue = Math.max(...Object.values(data).map(Number));
   const barWidth = canvas.width / Object.keys(data).length - 20;
+  const heightIncrement = 10;
 
-  Object.keys(data).forEach((studentName, idx) => {
-    const barHeight = (data[studentName] / maxValue) * canvas.height;
+  const drawBar = (idx) => {
+    if (idx >= Object.keys(data).length) return;
 
-    const renderChart = (curVal) => {
-      const x = idx * (barWidth + 20);
-      const y = canvas.height - curVal;
-      ctx.fillStyle = color[idx];
-      ctx.fillRect(x, y, barWidth, y);
+    const studentName = Object.keys(data)[idx];
+    const x = idx * (barWidth + 20);
+    const targetHeight = (data[studentName] / maxValue) * canvas.height;
+    let currentHeight = 0;
+
+    const renderChart = () => {
+      if (currentHeight < targetHeight) {
+        ctx.fillStyle = colors[idx];
+        ctx.fillRect(x, canvas.height - currentHeight, barWidth, currentHeight);
+        currentHeight += heightIncrement;
+        requestAnimationFrame(renderChart);
+      } else {
+        ctx.fillStyle = colors[idx];
+        ctx.fillRect(x, canvas.height - targetHeight, barWidth, targetHeight);
+        drawBar(idx + 1);
+      }
     };
 
-    animateBarChart(5, 0, barHeight, renderChart);
-  });
-};
+    renderChart();
+  };
 
-const animateBarChart = (animationFrame, startVal, endVal, renderFn) => {
-  if (startVal > endVal) {
-    return;
-  }
-
-  setTimeout(() => {
-    renderFn(startVal);
-    animateBarChart(animationFrame, startVal + 10, endVal, renderFn);
-  }, animationFrame);
-
-  return;
+  drawBar(0);
 };
