@@ -1,14 +1,3 @@
-const initToast = () => {
-  const $toastContainer = document.getElementById('toast');
-  const toastPositions = ['left', 'right'];
-
-  toastPositions.forEach((toastPosition) => {
-    const $ = document.createElement('div');
-    $.id = `toast-${toastPosition}`;
-    $toastContainer.appendChild($);
-  });
-};
-
 const ICONS = {
   success: '✅',
   error: '🚨',
@@ -16,48 +5,53 @@ const ICONS = {
   information: 'ℹ️',
 };
 
-const toast = ({
-  toastType = 'success',
-  message = 'success',
-  position = 'left',
-  durationTime = 4,
-}) => {
-  const $toastContainer =
-    position === 'left'
-      ? document.getElementById('toast-left')
-      : document.getElementById('toast-right');
+const initToast = () => {
+  const toastContainer = document.getElementById('toast');
+  const toastPositions = ['left', 'right'];
 
-  const $box = document.createElement('div');
-  const $wrapper = document.createElement('div');
-  const $icon = document.createElement('span');
-  const $text = document.createElement('span');
-  const $button = document.createElement('button');
-  const $bar = document.createElement('div');
+  toastPositions.forEach((toastPosition) => {
+    const toastPositionDiv = document.createElement('div');
+    toastPositionDiv.id = `toast-${toastPosition}`;
+    toastContainer.appendChild(toastPositionDiv);
+  });
+};
 
-  $icon.innerText = ICONS[toastType];
-  $icon.classList.add('toast-msg-icon');
+const createToastElement = (toastType, message) => {
+  const wrapper = document.createElement('div');
+  const icon = document.createElement('span');
+  const text = document.createElement('span');
+  const button = document.createElement('button');
+  const bar = document.createElement('div');
 
-  $text.innerText = message;
-  $text.classList.add('toast-msg-text');
+  icon.innerText = ICONS[toastType];
+  icon.classList.add('toast-msg-icon');
 
-  $button.innerText = '❌';
-  $button.classList.add('toast-close-btn');
-  $button.onclick = () => {
-    $box.remove();
-  };
+  text.innerText = message;
+  text.classList.add('toast-msg-text');
 
-  $wrapper.classList.add('toast-content-wrapper');
-  $wrapper.appendChild($icon);
-  $wrapper.appendChild($text);
-  $wrapper.appendChild($button);
+  button.innerText = '❌';
+  button.classList.add('toast-close-btn');
 
-  $bar.classList.add('progress-bar', `${toastType}`);
+  wrapper.classList.add('toast-content-wrapper');
+  wrapper.appendChild(icon);
+  wrapper.appendChild(text);
+  wrapper.appendChild(button);
 
-  $box.classList.add('toast-box');
-  $box.appendChild($wrapper);
-  $box.appendChild($bar);
+  bar.classList.add('progress-bar', toastType);
 
-  $toastContainer.appendChild($box);
+  const box = document.createElement('div');
+  box.classList.add('toast-box');
+  box.appendChild(wrapper);
+  box.appendChild(bar);
+
+  return { box, bar, button };
+};
+
+const toast = (options) => {
+  const { toastType, message, position, durationTime } = options;
+  const toastContainer = document.getElementById(`toast-${position}`);
+
+  const { box, bar, button } = createToastElement(toastType, message);
 
   let width = 0;
   const interval = setInterval(() => {
@@ -65,12 +59,19 @@ const toast = ({
       clearInterval(interval);
     } else {
       width += 1 / durationTime;
-      $bar.style.width = width + '%';
+      bar.style.width = width + '%';
     }
   }, 10);
 
+  button.onclick = () => {
+    box.remove();
+    clearInterval(interval);
+  };
+
+  toastContainer.appendChild(box);
+
   setTimeout(() => {
-    $box.remove();
+    box.remove();
   }, durationTime * 1000);
 };
 
@@ -79,14 +80,13 @@ initToast();
 const toastTypes = ['success', 'error', 'warning', 'information'];
 
 toastTypes.forEach((toastType, idx) => {
-  const $ = document.getElementById(`${toastType}-btn`);
-  $.addEventListener('click', () => {
-    const toastOption = {
-      toastType: toastType,
+  const toastButton = document.getElementById(`${toastType}-btn`);
+  toastButton.addEventListener('click', () => {
+    toast({
+      toastType,
       message: toastType,
       position: idx === 3 ? 'left' : 'right',
       durationTime: 4,
-    };
-    toast(toastOption);
+    });
   });
 });
