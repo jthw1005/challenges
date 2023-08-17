@@ -10,17 +10,17 @@ interface IMainProps {
 
 const MAIN_IMAGE_WIDTH = 550;
 const MAIN_IMAGE_HEIGHT = 360;
-const INIT_VALUE = 0;
+const DEFAULT_IMAGE_IDX = 0;
 const SUB_CAROUSEL_SIZE = 5;
 
 const Main = ({ images, setImages }: IMainProps) => {
   const navigate = useNavigate();
 
-  const [startIdx, setStartIdx] = useState<number>(INIT_VALUE);
+  const [startIdx, setStartIdx] = useState<number>(DEFAULT_IMAGE_IDX);
   const [endIdx, setEndIdx] = useState<number>(
-    INIT_VALUE + SUB_CAROUSEL_SIZE - 1
+    DEFAULT_IMAGE_IDX + SUB_CAROUSEL_SIZE - 1
   );
-  const [currIdx, setCurrIdx] = useState<number>(INIT_VALUE);
+  const [currIdx, setCurrIdx] = useState<number>(DEFAULT_IMAGE_IDX);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   useEffect(() => {
