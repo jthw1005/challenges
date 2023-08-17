@@ -17,26 +17,23 @@ const AddImageBtn = ({
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
+    const imageURLs: string[] = [];
+
     if (!files) {
       return;
     }
 
-    for (let i = 0; i < files.length; i++) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImages((prevImages: string[]) => [
-          ...prevImages,
-          reader.result as string,
-        ]);
+    let imageURL: string;
 
-        if (i === files.length - 1) {
-          if (onSuccessCallback) {
-            console.log('cb');
-            onSuccessCallback();
-          }
-        }
-      };
-      reader.readAsDataURL(files[i]);
+    for (let i = 0; i < files.length; i++) {
+      imageURL = URL.createObjectURL(files[i]);
+      imageURLs.push(imageURL);
+    }
+
+    setImages((prev) => [...prev, ...imageURLs]);
+
+    if (onSuccessCallback) {
+      onSuccessCallback();
     }
   };
 
