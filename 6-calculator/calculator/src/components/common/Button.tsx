@@ -36,7 +36,7 @@ const ButtonBox = styled.button<{ size: ButtonSize; backgroundColor: string }>`
   height: 50px;
   background-color: ${({ backgroundColor }) => backgroundColor};
   color: #fff;
-  border: 1px solid #555;
+  border: 0.5px solid #555;
   font-size: 1.2rem;
   cursor: pointer;
 `;
