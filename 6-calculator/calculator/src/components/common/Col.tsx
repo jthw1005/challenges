@@ -7,6 +7,7 @@ interface ColProps {
   justifyCenter?: FlexProperty;
   alignItems?: FlexProperty;
   gap?: number;
+  className?: string;
 }
 
 const Col = (props: ColProps) => {
@@ -15,9 +16,15 @@ const Col = (props: ColProps) => {
     justifyCenter = 'center',
     alignItems = 'center',
     gap = 0,
+    className,
   } = props;
   return (
-    <ColBox justifyCenter={justifyCenter} alignItems={alignItems} gap={gap}>
+    <ColBox
+      justifyCenter={justifyCenter}
+      alignItems={alignItems}
+      gap={gap}
+      className={className}
+    >
       {children}
     </ColBox>
   );

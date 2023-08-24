@@ -8,6 +8,7 @@ interface RowProps {
   justifyCenter?: FlexProperty;
   alignItems?: FlexProperty;
   gap?: number;
+  className?: string;
 }
 
 const Row = (props: RowProps) => {
@@ -16,9 +17,15 @@ const Row = (props: RowProps) => {
     justifyCenter = 'center',
     alignItems = 'center',
     gap = 0,
+    className,
   } = props;
   return (
-    <RowBox justifyCenter={justifyCenter} alignItems={alignItems} gap={gap}>
+    <RowBox
+      justifyCenter={justifyCenter}
+      alignItems={alignItems}
+      gap={gap}
+      className={className}
+    >
       {children}
     </RowBox>
   );
@@ -28,6 +35,7 @@ const RowBox = styled.div<{
   justifyCenter: FlexProperty;
   alignItems: FlexProperty;
   gap: number;
+  className?: string;
 }>`
   display: flex;
   justify-content: ${({ justifyCenter }) => justifyCenter};
