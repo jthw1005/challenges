@@ -1,24 +1,25 @@
 import { styled } from 'styled-components';
 import Text from './common/Text';
 import Col from './common/Col';
+import useCalculatorHistory from '../store/useCalculatorHistory';
 
 const Display = () => {
+  const { history, currentExpression } = useCalculatorHistory((state) => {
+    return {
+      history: state.history,
+      currentExpression: state.currentExpression,
+    };
+  });
+
   return (
     <DisplayBox>
       <HistoryBox alignItems="start" justifyCenter="start" gap={10}>
-        <Text
-          content="1 + 3 - 100000 + 100000 + 10 = 14"
-          color="#bbb"
-          fontSize={10}
-        />
-        <Text content="10 - 2 = 10" color="#bbb" fontSize={10} />
-        <Text content="10 - 2 = 10" color="#bbb" fontSize={10} />
-        <Text content="10 - 2 = 10" color="#bbb" fontSize={10} />
-        <Text content="10 - 2 = 10" color="#bbb" fontSize={10} />
-        <Text content="10 - 2 = 10" color="#bbb" fontSize={10} />
+        {history.map((v, i) => (
+          <Text key={i + v} content={v} color="#bbb" fontSize={10} />
+        ))}
       </HistoryBox>
       <CurrExpressionBox>
-        <Text content="3 x 2 - 10 % 3" color="#fff" fontSize={15} />
+        <Text content={currentExpression} color="#fff" fontSize={20} />
       </CurrExpressionBox>
     </DisplayBox>
   );
