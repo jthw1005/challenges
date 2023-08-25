@@ -71,13 +71,17 @@ const useCalculatorHistory = create<CaculatorHistory>((set) => ({
     }),
 
   getResult: () =>
-    set((state) => ({
-      history: [
-        ...state.history,
-        `${state.currentExpression} = ${calculate(state.currentExpression)}`,
-      ],
-      currentExpression: '0',
-    })),
+    set((state) => {
+      const result = calculate(state.currentExpression);
+      if (isLastInputOperator(state.currentExpression) || result === 'NaN') {
+        alert('not a vaild input');
+        return {};
+      }
+      return {
+        history: [...state.history, `${state.currentExpression} = ${result}`],
+        currentExpression: '0',
+      };
+    }),
 }));
 
 export default useCalculatorHistory;
