@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import Text from './common/Text';
 import Col from './common/Col';
 import useCalculatorHistory from '../store/useCalculatorHistory';
+import { useEffect, useRef } from 'react';
 
 const Display = () => {
   const { history, currentExpression } = useCalculatorHistory((state) => {
@@ -11,6 +12,15 @@ const Display = () => {
     };
   });
 
+  const boxRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const currentExpressionBox = boxRef.current;
+    if (currentExpressionBox) {
+      currentExpressionBox.scrollLeft = currentExpressionBox.scrollWidth;
+    }
+  }, [currentExpression]);
+
   return (
     <DisplayBox>
       <HistoryBox alignItems="start" justifyCenter="start" gap={10}>
@@ -18,7 +28,7 @@ const Display = () => {
           <Text key={i + v} content={v} color="#bbb" fontSize={10} />
         ))}
       </HistoryBox>
-      <CurrExpressionBox>
+      <CurrExpressionBox ref={boxRef}>
         <Text content={currentExpression} color="#fff" fontSize={20} />
       </CurrExpressionBox>
     </DisplayBox>
@@ -32,13 +42,16 @@ const DisplayBox = styled.div`
 `;
 
 const HistoryBox = styled(Col)`
-  height: 80%;
+  height: 75%;
   overflow-y: scroll;
   padding-bottom: 10px;
 `;
 
 const CurrExpressionBox = styled.div`
-  height: 20%;
+  height: 25%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
 `;
 
 export default Display;
