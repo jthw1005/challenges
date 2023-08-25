@@ -5,11 +5,7 @@ import useCalculatorHistory from '../store/useCalculatorHistory';
 
 const ButtonInterface = () => {
   const {
-    addPlus,
-    addMinus,
-    addMultiplication,
-    addDivision,
-    addMod,
+    addOperator,
     addNum,
     clear,
     toggleSign,
@@ -35,14 +31,14 @@ const ButtonInterface = () => {
         <Button
           text="%"
           onClick={() => {
-            addMod();
+            addOperator('%');
           }}
         />
         <Button
           text="÷"
           backgroundColor="orange"
           onClick={() => {
-            addDivision();
+            addOperator('÷');
           }}
         />
       </Row>
@@ -69,7 +65,7 @@ const ButtonInterface = () => {
           text="x"
           backgroundColor="orange"
           onClick={() => {
-            addMultiplication();
+            addOperator('x');
           }}
         />
       </Row>
@@ -96,7 +92,7 @@ const ButtonInterface = () => {
           text="-"
           backgroundColor="orange"
           onClick={() => {
-            addMinus();
+            addOperator('-');
           }}
         />
       </Row>
@@ -123,7 +119,7 @@ const ButtonInterface = () => {
           text="+"
           backgroundColor="orange"
           onClick={() => {
-            addPlus();
+            addOperator('+');
           }}
         />
       </Row>
