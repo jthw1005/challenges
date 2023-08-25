@@ -10,6 +10,11 @@ function calculate(expr: Formula): string {
   for (let i = 0; i < newExpr.length; i++) {
     if (!isNaN(+newExpr[i]) || newExpr[i] === '.') {
       temp = temp + newExpr[i];
+    } else if (expr[i] === '(') {
+      temp = temp + '-';
+      i++;
+    } else if (expr[i] === ')') {
+      continue;
     } else {
       if (operator === '') {
         stack.push(+temp);

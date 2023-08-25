@@ -25,7 +25,9 @@ const useCalculatorHistory = create<CaculatorHistory>((set) => ({
   addOperator: (operator: Operator) =>
     set(({ currentExpression }) => {
       if (isLastInputOperator(currentExpression)) {
-        return {};
+        return {
+          currentExpression: currentExpression.slice(0, -3) + ` ${operator} `,
+        };
       }
       return {
         currentExpression: currentExpression + ` ${operator} `,
