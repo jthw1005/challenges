@@ -35,10 +35,16 @@ const useCalculatorHistory = create<CaculatorHistory>((set) => ({
     }),
 
   addNum: (num: number) =>
-    set(({ currentExpression }) => ({
-      currentExpression:
-        currentExpression === '0' ? String(num) : currentExpression + num,
-    })),
+    set(({ currentExpression }) => {
+      if (currentExpression[currentExpression.length - 1] === ')') {
+        return {};
+      }
+
+      return {
+        currentExpression:
+          currentExpression === '0' ? String(num) : currentExpression + num,
+      };
+    }),
 
   clear: () =>
     set(() => ({
