@@ -75,7 +75,11 @@ const useCalculatorHistory = create<CaculatorHistory>((set) => ({
   getResult: () =>
     set((state) => {
       const result = calculate(state.currentExpression);
-      if (isLastInputOperator(state.currentExpression) || result === 'NaN') {
+      if (
+        isLastInputOperator(state.currentExpression) ||
+        result === 'NaN' ||
+        result === 'Infinity'
+      ) {
         alert('not a vaild input');
         return {};
       }
