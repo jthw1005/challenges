@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 type ButtonSize = 'normal' | 'large';
-type ColorCode = string;
+export type ColorCode = string;
 
 interface ButtonProps {
   text: string;

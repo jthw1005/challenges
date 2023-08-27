@@ -5,12 +5,16 @@ import useCalculatorHistory from '../store/useCalculatorHistory';
 import { useEffect, useRef } from 'react';
 
 const Display = () => {
-  const { history, currentExpression } = useCalculatorHistory((state) => {
-    return {
-      history: state.history,
-      currentExpression: state.currentExpression,
-    };
-  });
+  const { history, currentExpression, mode, handleInputChange, getResult } =
+    useCalculatorHistory((state) => {
+      return {
+        history: state.history,
+        currentExpression: state.currentExpression,
+        mode: state.mode,
+        handleInputChange: state.handleInputChange,
+        getResult: state.getResult,
+      };
+    });
 
   const boxRef = useRef<HTMLDivElement | null>(null);
 
@@ -29,7 +33,21 @@ const Display = () => {
         ))}
       </HistoryBox>
       <CurrExpressionBox ref={boxRef}>
-        <Text content={currentExpression} color="#fff" fontSize={20} />
+        {mode === 'btn' ? (
+          <Text content={currentExpression} color="#fff" fontSize={20} />
+        ) : (
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              getResult();
+            }}
+          >
+            <ExpressionInput
+              value={currentExpression}
+              onChange={handleInputChange}
+            />
+          </form>
+        )}
       </CurrExpressionBox>
     </DisplayBox>
   );
@@ -52,6 +70,17 @@ const CurrExpressionBox = styled.div`
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
+`;
+
+const ExpressionInput = styled.input`
+  width: 100%;
+  border: none;
+  color: #fff;
+  background-color: transparent;
+  border-bottom: 1px solid orange;
+  &:focus {
+    outline: none;
+  }
 `;
 
 export default Display;

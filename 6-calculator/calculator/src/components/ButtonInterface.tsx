@@ -1,7 +1,8 @@
 import Row from './common/Row';
-import Button from './common/Button';
+// import Button from './common/Button';
 import Col from './common/Col';
 import useCalculatorHistory from '../store/useCalculatorHistory';
+import CalculatorBtn from './CalculatorButton';
 
 const ButtonInterface = () => {
   const {
@@ -11,30 +12,31 @@ const ButtonInterface = () => {
     toggleSign,
     toggleDecimalPoint,
     getResult,
+    toggleMode,
   } = useCalculatorHistory();
 
   return (
     <Col>
       <Row>
-        <Button
+        <CalculatorBtn
           text="C"
           onClick={() => {
             clear();
           }}
         />
-        <Button
+        <CalculatorBtn
           text="+/-"
           onClick={() => {
             toggleSign();
           }}
         />
-        <Button
+        <CalculatorBtn
           text="%"
           onClick={() => {
             addOperator('%');
           }}
         />
-        <Button
+        <CalculatorBtn
           text="÷"
           backgroundColor="orange"
           onClick={() => {
@@ -43,25 +45,25 @@ const ButtonInterface = () => {
         />
       </Row>
       <Row>
-        <Button
+        <CalculatorBtn
           text="7"
           onClick={() => {
             addNum(7);
           }}
         />
-        <Button
+        <CalculatorBtn
           text="8"
           onClick={() => {
             addNum(8);
           }}
         />
-        <Button
+        <CalculatorBtn
           text="9"
           onClick={() => {
             addNum(9);
           }}
         />
-        <Button
+        <CalculatorBtn
           text="x"
           backgroundColor="orange"
           onClick={() => {
@@ -70,25 +72,25 @@ const ButtonInterface = () => {
         />
       </Row>
       <Row>
-        <Button
+        <CalculatorBtn
           text="4"
           onClick={() => {
             addNum(4);
           }}
         />
-        <Button
+        <CalculatorBtn
           text="5"
           onClick={() => {
             addNum(5);
           }}
         />
-        <Button
+        <CalculatorBtn
           text="6"
           onClick={() => {
             addNum(6);
           }}
         />
-        <Button
+        <CalculatorBtn
           text="-"
           backgroundColor="orange"
           onClick={() => {
@@ -97,25 +99,25 @@ const ButtonInterface = () => {
         />
       </Row>
       <Row>
-        <Button
+        <CalculatorBtn
           text="1"
           onClick={() => {
             addNum(1);
           }}
         />
-        <Button
+        <CalculatorBtn
           text="2"
           onClick={() => {
             addNum(2);
           }}
         />
-        <Button
+        <CalculatorBtn
           text="3"
           onClick={() => {
             addNum(3);
           }}
         />
-        <Button
+        <CalculatorBtn
           text="+"
           backgroundColor="orange"
           onClick={() => {
@@ -124,25 +126,25 @@ const ButtonInterface = () => {
         />
       </Row>
       <Row>
-        <Button
+        <CalculatorBtn
           text="M"
           onClick={() => {
-            console.log('change input mode');
+            toggleMode();
           }}
         />
-        <Button
+        <CalculatorBtn
           text="0"
           onClick={() => {
             addNum(0);
           }}
         />
-        <Button
+        <CalculatorBtn
           text="."
           onClick={() => {
             toggleDecimalPoint();
           }}
         />
-        <Button
+        <CalculatorBtn
           text="="
           backgroundColor="orange"
           onClick={() => {

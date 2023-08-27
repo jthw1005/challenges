@@ -3,25 +3,30 @@ import { extractNumber } from '../utils/extractNumber';
 import { dotRegex } from '../utils/regex';
 import calculate from '../utils/calculate';
 import isLastInputOperator from '../utils/isLastInputOperator';
+import { ChangeEvent } from 'react';
 
 export type Formula = string;
 export type Operator = '+' | '-' | 'x' | '÷' | '%';
+export type Mode = 'btn' | 'typing';
 
 interface CaculatorHistory {
   history: Formula[];
   currentExpression: Formula;
+  mode: Mode;
   addOperator: (operator: Operator) => void;
   addNum: (num: number) => void;
   clear: () => void;
   toggleSign: () => void;
   toggleDecimalPoint: () => void;
   getResult: () => void;
+  toggleMode: () => void;
+  handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const useCalculatorHistory = create<CaculatorHistory>((set) => ({
   history: [],
   currentExpression: '0',
-
+  mode: 'btn',
   addOperator: (operator: Operator) =>
     set(({ currentExpression }) => {
       if (isLastInputOperator(currentExpression)) {
@@ -93,6 +98,20 @@ const useCalculatorHistory = create<CaculatorHistory>((set) => ({
         history: [...state.history, `${state.currentExpression} = ${result}`],
         currentExpression: '0',
       };
+    }),
+
+  toggleMode: () =>
+    set((state) => {
+      if (state.mode === 'btn') {
+        return { mode: 'typing', currentExpression: '0' };
+      } else {
+        return { mode: 'btn', currentExpression: '0' };
+      }
+    }),
+
+  handleInputChange: (event: ChangeEvent<HTMLInputElement>) =>
+    set(() => {
+      return { currentExpression: event.target.value };
     }),
 }));
 
