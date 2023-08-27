@@ -18,7 +18,12 @@ function calculate(expr: Formula): number {
     return tempArr.join('');
   };
 
-  // 1. 토큰화
+  // 1. 중괄호, 대괄호 치환
+  function replaceBrackets(str: string) {
+    return str.replace(/[{\[]/g, '(').replace(/[}\]]/g, ')');
+  }
+
+  // 2. 토큰화
   const tokenize = (expr: Formula): Token[] => {
     const tokens: Token[] = [];
     let num = '';
@@ -47,7 +52,7 @@ function calculate(expr: Formula): number {
     return tokens;
   };
 
-  // 2. 중위 표기법에서 후위 표기법으로 변환
+  // 3. 후위 표기법으로 변환
   const infixToPostfix = (tokens: Token[]): Token[] => {
     const output: Token[] = [];
     const opsStack: string[] = [];
@@ -86,7 +91,7 @@ function calculate(expr: Formula): number {
     return output;
   };
 
-  // 3. 후위 표기법 계산
+  // 4. 계산
   const computePostfix = (postfixTokens: Token[]): number => {
     const values: number[] = [];
 
@@ -118,12 +123,12 @@ function calculate(expr: Formula): number {
     return values[0];
   };
 
-  // 4. 소수점 둘 째 자리 반올림
+  // 5. 소수점 둘 째 자리 반올림
   const roundToTwoDecimals = (num: number): number => {
     return Math.round(num * 100) / 100;
   };
 
-  const newExpr = replaceOperator(expr);
+  const newExpr = replaceBrackets(replaceOperator(expr));
   const tokens = tokenize(newExpr);
   const postfixTokens = infixToPostfix(tokens);
   const calculatedResult = computePostfix(postfixTokens);
